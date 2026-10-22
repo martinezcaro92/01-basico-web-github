@@ -1,0 +1,41 @@
+# ------------------------------------------------------------
+# EJEMPLO 01 · BÁSICO · Web (HTML) · GitHub Actions
+# Valida que todo el HTML del proyecto es correcto en cada push
+# y en cada pull request contra la rama principal.
+# ------------------------------------------------------------
+name: CI - Validar HTML
+
+# ¿CUÁNDO se ejecuta el workflow? (disparadores / triggers)
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# ¿QUÉ se ejecuta? Un workflow tiene uno o varios jobs.
+jobs:
+  validar-html:
+    # Máquina virtual limpia que GitHub nos presta para cada ejecución
+    runs-on: ubuntu-latest
+
+    # Pasos del job, se ejecutan en orden. Si uno falla, el job falla.
+    steps:
+      # 1. Descargar el código del repositorio en la máquina virtual
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      # 2. Instalar Node.js (lo necesita el validador html-validate)
+      - name: Instalar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      # 3. Instalar las dependencias EXACTAS de package-lock.json
+      - name: Instalar dependencias
+        run: npm ci
+
+      # 4. Validar el HTML. Si hay errores, el comando devuelve un código
+      #    distinto de 0, el paso falla y GitHub marca el commit con una ❌
+      - name: Validar HTML
+        run: npm run validate
