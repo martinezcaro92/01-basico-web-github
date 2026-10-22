@@ -1,0 +1,19 @@
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1rem;
+  line-height: 1.5;
+}
+
+nav ul {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+}
+
+form {
+  display: grid;
+  gap: 0.5rem;
+}
